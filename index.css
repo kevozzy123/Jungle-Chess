@@ -1,0 +1,183 @@
+@import url('https://fonts.googleapis.com/css2?family=Aleo:wght@300;400;700&family=Itim&family=Playfair+Display:ital@1&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --one-color: red;
+    --two-color: green;
+    --one-piece: rgb(222, 117, 117);
+    --two-piece: rgb(85, 204, 85);
+}
+
+body {
+    /* background-color: bisque; */
+    font-family: 'Aleo', serif;
+    display: flex;
+    justify-content: center;
+    background-color: rgb(8, 97, 27);
+    height: 100vh;
+    position: relative;
+}
+
+ol,
+ul {
+    list-style: none;
+}
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 600px;
+    height: 100%;
+}
+
+#app {
+    display: flex;
+    flex-direction: column;
+    border: 8px solid rgb(255, 255, 255);
+    box-shadow: 0 0 8px grey;
+}
+
+.row {
+    display: flex;
+}
+
+.menu {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.btn {
+    display: block;
+    padding: 1rem 2rem;
+    margin-top: 2rem;
+    border-radius: 1rem;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    width: 50%;
+}
+
+.box {
+    height: 3.75rem;
+    width: 3.75rem;
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(231, 223, 71);
+    /* color: white; */
+    font-size: 3rem;
+    border: 2px solid white;
+}
+
+.box.turn {
+    box-shadow: 0 0 6px black;
+    border: 2px solid black;
+    padding: 5px;
+}
+
+.box.terrain {
+    font-size: 1rem;
+    color: white;
+}
+
+.hover:hover {
+    opacity: .7;
+}
+
+.selected {
+    transform: translateY(-10px);
+    box-shadow: 0 3px 19px 3px rgba(51, 51, 51, 0.5);
+}
+
+.river {
+    background-color: blue;
+}
+
+.score-box {
+    display: flex;
+    justify-content: space-between;
+    /* margin: 2rem; */
+    width: 100%;
+}
+
+.turn-box {
+    font-weight: 800;
+    font-size: 1rem;
+    /* display: none; */
+}
+
+.playerone-box {
+    background-color: var(--one-piece);
+}
+
+.playertwo-box {
+    background-color: var(--two-piece);
+}
+
+.game-over-modal {
+    border: 1px solid black;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 300px;
+    width: 500px;
+    background-color: white;
+    display: none;
+}
+
+.shadow {
+    position: fixed;
+    display: none;
+    width: 100vw;
+    height: 100vh;
+    top: 0%;
+    left: 0%;
+    background-color: rgba(0, 0, 0, .4);
+}
+
+.iconfont {
+    pointer-events: none;
+    font-size: 3rem !important;
+}
+
+.iconfont {
+    font-size: 2rem;
+}
+
+.legal::before {
+    font-family: "iconfont" !important;
+    content: "\e608";
+    position: absolute;
+    z-index: 999;
+    font-weight: 800;
+    font-size: 2.75rem;
+    color: white !important;
+}
+
+@media screen and (max-width: 567px) {
+    .main-container {
+        justify-content: space-between;
+    }
+
+    .box {
+        height: 3.25rem;
+        width: 3.25rem;
+        font-size: 2.5rem;
+    }
+
+    .iconfont {
+        pointer-events: none;
+        font-size: 2.5rem !important;
+    }
+}

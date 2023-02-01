@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beast Chess</title>
+    <link rel="icon" type="image/x-icon" href="./src/assets/imgs/favicon.png">
+    <link rel="stylesheet" href="./index.css">
+    <link rel="stylesheet" href="./src/assets/iconfont/iconfont.css">
+    <style>
+        .rules {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 90%;
+            background-color: rgb(255, 247, 185);
+            padding: 1rem;
+            border-radius: 1rem;
+            height: 50%;
+            overflow: auto;
+            transition: all .2s;
+            z-index: 99;
+            display: none;
+        }
+
+        .rules::-webkit-scrollbar {
+            display: none;
+        }
+
+        .rules li {
+            margin: 1rem 0;
+        }
+
+        .rules h2 {
+            text-align: center;
+            font-weight: 800;
+        }
+
+        .rules h3 {
+            font-weight: 800;
+            font-size: 1.25rem;
+        }
+
+        .rules strong {
+            color: rgb(224, 49, 0);
+        }
+
+        .options {
+            width: 100%;
+            padding: 1rem;
+        }
+
+        .options button {
+            background-color: rgb(255, 204, 0);
+            padding: .5rem;
+            border: none;
+            font-size: 1rem;
+            border-radius: 50%;
+            margin-right: 1rem;
+        }
+
+        .options .iconfont {
+            font-size: 1.5rem !important;
+        }
+
+        .game-page {
+            /* width: 100%; */
+            height: 100%;
+            display: none;
+        }
+
+        .menu-page {
+            /* display: none; */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            height: 100vh;
+            background-image: url('./src/assets/imgs/forest.jpg');
+            background-size: cover;
+        }
+
+        .menu-page h1 {
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main-container">
+        <main class="game-page">
+            <div class="score-box">
+                <div class="playerone-box">
+                    <h2>playOne</h2>
+                </div>
+                <div class="turn-box">Red Player's Turn</div>
+                <div class="playertwo-box">
+                    <h2>PlayerTwo</h2>
+                </div>
+            </div>
+            <section id="app"></section>
+            <div class="options">
+                <button><i class="iconfont icon-fanhui"></i></button>
+                <button><i class="iconfont icon-liebiao"></i></button>
+            </div>
+        </main>
+
+        <section class="menu-page">
+            <h1>Beast Chess</h1>
+            <button class="btn start">Start Game</button>
+            <button class="btn rule-btn">Rules</button>
+        </section>
+
+
+        <div class="shadow"></div>
+        <div class="game-over-modal">
+            <h3>Red Player has won!</h3>
+            <p class="game-over-text">You have beaten your opponent!</p>
+            <button>close</button>
+        </div>
+
+        <article class="rules">
+            <h2>Game Rules</h2>
+            <ol>
+                <li>
+                    <h3>[Win condition]</h3><strong>Remove all enemy animals</strong> or <strong>take the enemy
+                        lair.</strong>
+                    <br> If no piece is eaten for a number of turns(you can configure this setting before the start of
+                    each
+                    game), draw is called.
+                </li>
+                <li>
+                    <h3>[Eating Rules]</h3>
+                    Stronger animals can eat weaker animals. However, <strong>elephant</strong>, who is supposed to be
+                    the strongest
+                    animal, <strong>can be eaten by rat.</strong>
+                </li>
+                <li>The order of strength is as follows: <strong>elephant > lion > tiger > cheeta > wolf > dog > cat >
+                        rat > elephant</strong> </li>
+                <li>You cannot eat your own animals</li>
+                <li>
+                    <h3>[Movement Rules]</h3>
+                    When an animals moves into the enemy trap, it becomes <strong>vaulnerable</strong> and can be eaten
+                    by any enemy
+                    animal. But animals won't be affected by traps of their own side.
+                </li>
+                <li>Normally, animals can only move <strong>one grid at a time, horizontally or vertically</strong>,
+                    with the exception
+                    of rats and lions or tigers. <strong>Rats are the only animals that can move into
+                        the river</strong>. While a rat is in
+                    river, it's <strong>invuneralble</strong>, but unable to eat elephants on land, nor do they can eat
+                    other rats in the water, either. Tigers and
+                    lions can <strong>jump
+                        across the river</strong> if they are near it.
+                </li>
+                <li>You cannot move into your own lair</li>
+            </ol>
+        </article>
+    </div>
+
+    <audio src="./src/assets/audio/chessMove.mp3"></audio>
+    <script type="module" src="./dist/index.js"></script>
+</body>
+
+</html>
