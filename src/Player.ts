@@ -1,12 +1,10 @@
-import { gameControl } from "./index";
-
 class Player {
     animalCount: number;
     timeLeft: number;
     lairAlive: boolean;
-    constructor() {
+    constructor(timeLeft: number) {
         this.animalCount = 8;
-        this.timeLeft = 300;
+        this.timeLeft = timeLeft;
         this.lairAlive = true
     }
 

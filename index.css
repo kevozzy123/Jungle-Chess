@@ -7,10 +7,12 @@
 }
 
 :root {
-    --one-color: red;
-    --two-color: green;
-    --one-piece: rgb(222, 117, 117);
-    --two-piece: rgb(85, 204, 85);
+    --one-color: rgb(250, 0, 0);
+    --two-color: rgb(0, 115, 255);
+    --one-piece: rgb(230, 63, 63);
+    --two-piece: rgb(55, 121, 221);
+
+    --river-color: rgb(80, 211, 255);
 }
 
 body {
@@ -18,7 +20,7 @@ body {
     font-family: 'Aleo', serif;
     display: flex;
     justify-content: center;
-    background-color: rgb(8, 97, 27);
+    background-color: rgb(255, 228, 138);
     height: 100vh;
     position: relative;
 }
@@ -73,7 +75,7 @@ ul {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgb(231, 223, 71);
+    background-color: rgb(169, 229, 29);
     /* color: white; */
     font-size: 3rem;
     border: 2px solid white;

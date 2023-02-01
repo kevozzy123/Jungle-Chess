@@ -1,7 +1,7 @@
 class Player {
-    constructor() {
+    constructor(timeLeft) {
         this.animalCount = 8;
-        this.timeLeft = 300;
+        this.timeLeft = timeLeft;
         this.lairAlive = true;
     }
     get alive() {

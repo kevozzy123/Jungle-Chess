@@ -2,12 +2,13 @@ import Player from './Player.js';
 import Board from './Board.js';
 import UserInterface from './UserIterface.js';
 import { abs } from './util/index.js';
-const RED = 'rgb(222, 117, 117)';
-const GREEN = 'rgb(85, 204, 85)';
+const RED = 'var(--one-piece)';
+const BLUE = 'var(--two-piece)';
+const RIVER = 'var(--river-color)';
 class GameControl {
     constructor() {
-        this.redPlayer = new Player();
-        this.bluePlayer = new Player();
+        this.redPlayer = new Player(300);
+        this.bluePlayer = new Player(300);
         this.selectedPiece = null;
         this.selectedAttr = null;
         this.board = new Board();
@@ -66,7 +67,7 @@ class GameControl {
                         }
                     }
                     else {
-                        if (this.isSide('green', arr[i][j])) {
+                        if (this.isSide('blue', arr[i][j])) {
                             this.setSelectedPiece(box, [i, j], e);
                             return;
                         }
@@ -80,8 +81,8 @@ class GameControl {
                     box.style.background = RED;
                     redAnimals++;
                 }
-                else if (this.isSide('green', arr[i][j])) {
-                    box.style.background = GREEN;
+                else if (this.isSide('blue', arr[i][j])) {
+                    box.style.background = BLUE;
                     greenAnimals++;
                 }
                 if (this.redTurn) {
@@ -92,14 +93,14 @@ class GameControl {
                     }
                 }
                 else {
-                    if (this.isSide('green', arr[i][j])) {
+                    if (this.isSide('blue', arr[i][j])) {
                         box.style.cursor = 'pointer';
                         box.classList.add('hover');
                         box.classList.add('turn');
                     }
                 }
                 if (arr[i][j] === 33) {
-                    box.style.backgroundColor = '#1E90FF';
+                    box.style.backgroundColor = RIVER;
                 }
                 if (arr[i][j] === 31 || arr[i][j] === 30) {
                     box.style.backgroundColor = '#4e342e';
@@ -180,11 +181,25 @@ class GameControl {
                     surroundings = filtered;
                 }
             }
-            // check ally
+            // check ally and friendly lair
             let withoutAllyBoxes = surroundings.filter(item => {
                 return !item.classList.contains('hover');
             });
             surroundings = withoutAllyBoxes;
+            let withoutOwnLair;
+            if (Number(this.selectedAttr) > 0) {
+                console.log('=====');
+                withoutOwnLair = surroundings.filter(item => {
+                    return item.getAttribute('data-num') !== '40';
+                });
+            }
+            else {
+                console.log('++++++S');
+                withoutOwnLair = surroundings.filter(item => {
+                    return item.getAttribute('data-num') !== '41';
+                });
+            }
+            surroundings = withoutOwnLair;
         });
         // console.log(surroundings)
         surroundings.forEach(sur => {
@@ -245,13 +260,13 @@ class GameControl {
                 this.board.arr[indexOne][indexTwo] = 0;
                 this.board.arr[i][j] = Number(this.selectedAttr) + 100;
             }
-            else if (this.isSide('green', this.selectedAttr)) {
+            else if (this.isSide('blue', this.selectedAttr)) {
                 this.board.arr[indexOne][indexTwo] = 0;
                 this.board.arr[i][j] = Number(this.selectedAttr) - 1000;
             }
         }
         else if (targetAttr === '31') {
-            if (this.isSide('green', this.selectedAttr)) {
+            if (this.isSide('blue', this.selectedAttr)) {
                 this.board.arr[indexOne][indexTwo] = 0;
                 this.board.arr[i][j] = Number(this.selectedAttr) - 100;
             }
