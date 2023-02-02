@@ -22,6 +22,8 @@ Once the enemy lair is taken or all of their beasts are eliminated, you win.
 
 ## Game Logic
 I used **vanilla TypeScript and CSS** to make this game without any framework such as React or Vue, though in hindsight, I definetely made it difficult for myself as I need to mannully manipulate a lot of DOM and I had to rely on web components to seperate html elements into another file.
+
+### Board Visualization
 I used an array of array to represent of chess board and its contents. This way, it's easier to add on new features such as undo or even upgrade it into a multiplayer game in the future
 
 ```javascript
@@ -40,3 +42,5 @@ I used an array of array to represent of chess board and its contents. This way,
 
 -1 to -8 represents elephant to rat of the green team, while 1 to 8 for the red team. 33 represents river terrain. 30 and 31 represents each team's traps
 Finally, 40 and 41 represent each lair.
+
+### Animal special status

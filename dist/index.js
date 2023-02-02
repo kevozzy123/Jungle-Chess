@@ -15,22 +15,55 @@ class GameControl {
         this.targetLocation = null;
         this.idleTurns = 0;
         this.timer = null;
-        this.UI = new UserInterface();
+        this.redTimer = null;
+        this.blueTimer = null;
         this.audio = document.querySelector('audio');
         this.isGameover = false;
         this.redTurn = true;
         this.startBtn = document.querySelector('.btn');
         this.app = document.getElementById('app');
         this.turnText = document.querySelector('.turn-box');
+        this.UI = new UserInterface();
+        this.lastMove = [...this.board.arr];
+        this.undoBtn = document.querySelector('.undo-btn');
+        this.shadow = document.querySelector('.shadow');
+        this.redTime = document.querySelector('.time-box-red');
+        this.blueTime = document.querySelector('.time-box-blue');
         this.init();
     }
     ;
     init() {
-        this.startBtn.addEventListener('click', () => this.handleStartClick());
-    }
-    handleStartClick() {
-        this.UI.showGame();
         this.drawBoard();
+        this.undoBtn.addEventListener('click', () => {
+            this.UI.hideToolkit();
+            this.board.arr = this.lastMove;
+            this.reRender();
+        });
+        this.startTimer();
+    }
+    startTimer() {
+        if (this.redTurn) {
+            this.redTimer = setInterval(() => {
+                this.redPlayer.timeLeft--;
+                this.redTime.textContent = String(this.redPlayer.timeLeft);
+                if (this.redPlayer.timeLeft === 0) {
+                    this.UI.showGameover('Red play has run out of time!', 'blue');
+                    clearInterval(this.redTimer);
+                }
+            }, 1000);
+            clearInterval(this.blueTimer);
+        }
+        else {
+            this.blueTimer = setInterval(() => {
+                this.bluePlayer.timeLeft--;
+                this.blueTime.textContent = String(this.bluePlayer.timeLeft);
+                if (this.bluePlayer.timeLeft === 0) {
+                    this.UI.showGameover('Blue play has run out of time!', 'red');
+                    clearInterval(this.blueTimer);
+                }
+            }, 1000);
+            clearInterval(this.redTimer);
+        }
     }
     drawBoard() {
         let arr = this.board.arr;
@@ -58,7 +91,6 @@ class GameControl {
                 let boardContent = `<i class='iconfont'>${animalIcon}</i>`;
                 box.classList.add('box');
                 box.innerHTML = animalIcon ? boardContent : '';
-                // box.textContent = boardContent
                 box.addEventListener('click', (e) => {
                     if (this.redTurn) {
                         if (this.isSide('red', arr[i][j])) {
@@ -186,20 +218,23 @@ class GameControl {
                 return !item.classList.contains('hover');
             });
             surroundings = withoutAllyBoxes;
+            // cannot move into friendly lair
             let withoutOwnLair;
             if (Number(this.selectedAttr) > 0) {
-                console.log('=====');
                 withoutOwnLair = surroundings.filter(item => {
                     return item.getAttribute('data-num') !== '40';
                 });
             }
             else {
-                console.log('++++++S');
                 withoutOwnLair = surroundings.filter(item => {
                     return item.getAttribute('data-num') !== '41';
                 });
             }
             surroundings = withoutOwnLair;
+            // cannot attack rats in river
+            let ratsInRiver;
+            ratsInRiver = surroundings.filter(item => abs(item.getAttribute('data-num')) !== 24);
+            surroundings = ratsInRiver;
         });
         // console.log(surroundings)
         surroundings.forEach(sur => {
@@ -216,31 +251,14 @@ class GameControl {
         if (!e.target.classList.contains('legal')) {
             return;
         }
+        this.lastMove = JSON.parse(JSON.stringify(this.board.arr));
+        console.log('before', this.lastMove);
         // get the terrain type of target location
         if (abs(targetAttr) === 0) {
             // move seleted piece to target position
             this.board.arr[i][j] = Number(this.selectedAttr);
             this.board.arr[indexOne][indexTwo] = 0;
-            if (abs(this.selectedAttr) === 24) {
-                this.board.arr[indexOne][indexTwo] = 33;
-                this.board.arr[i][j] = Number(this.selectedAttr) / 3;
-            }
-            else if (Number(this.selectedAttr) > 1000) {
-                this.board.arr[indexOne][indexTwo] = 31;
-                this.board.arr[i][j] = Number(this.selectedAttr) - 1000;
-            }
-            else if (Number(this.selectedAttr) < -1000) {
-                this.board.arr[indexOne][indexTwo] = 30;
-                this.board.arr[i][j] = Number(this.selectedAttr) + 1000;
-            }
-            else if (Number(this.selectedAttr) < -100) {
-                this.board.arr[indexOne][indexTwo] = 31;
-                this.board.arr[i][j] = Number(this.selectedAttr) + 100;
-            }
-            else if (Number(this.selectedAttr) > 100) {
-                this.board.arr[indexOne][indexTwo] = 30;
-                this.board.arr[i][j] = Number(this.selectedAttr) - 100;
-            }
+            this.statusCheck(indexOne, indexTwo, i, j);
         }
         else if (abs(targetAttr) < 10 && Number(targetAttr) !== 0) {
             this.compareAnimalSize(targetAttr, i, j, indexOne, indexTwo);
@@ -290,15 +308,41 @@ class GameControl {
         }
         else if (Number(targetAttr) === 40) {
             if (Number(this.selectedAttr) < 0) {
-                this.UI.showGameover("Red Player's lair has been taken!");
+                this.UI.showGameover("Red Player's lair has been taken!", 'blue');
+                this.statusCheck(indexOne, indexTwo, i, j);
             }
         }
         else if (Number(targetAttr) === 41) {
             if (Number(this.selectedAttr) > 0) {
-                this.UI.showGameover("Green Player's lair has been taken!");
+                this.UI.showGameover("Blue Player's lair has been taken!", 'red');
+                this.statusCheck(indexOne, indexTwo, i, j);
             }
         }
+        // this.lastMoves.push(this.board.arr)
+        console.log(this.board.arr);
         this.reRender();
+    }
+    statusCheck(indexOne, indexTwo, i, j) {
+        if (abs(this.selectedAttr) === 24) {
+            this.board.arr[indexOne][indexTwo] = 33;
+            this.board.arr[i][j] = Number(this.selectedAttr) / 3;
+        }
+        else if (Number(this.selectedAttr) > 1000) {
+            this.board.arr[indexOne][indexTwo] = 31;
+            this.board.arr[i][j] = Number(this.selectedAttr) - 1000;
+        }
+        else if (Number(this.selectedAttr) < -1000) {
+            this.board.arr[indexOne][indexTwo] = 30;
+            this.board.arr[i][j] = Number(this.selectedAttr) + 1000;
+        }
+        else if (Number(this.selectedAttr) < -100) {
+            this.board.arr[indexOne][indexTwo] = 31;
+            this.board.arr[i][j] = Number(this.selectedAttr) + 100;
+        }
+        else if (Number(this.selectedAttr) > 100) {
+            this.board.arr[indexOne][indexTwo] = 30;
+            this.board.arr[i][j] = Number(this.selectedAttr) - 100;
+        }
     }
     compareAnimalSize(targetAttr, i, j, indexOne, indexTwo) {
         let isSameTeam = (Number(targetAttr) > 0 && Number(this.selectedAttr) > 0)
@@ -311,11 +355,13 @@ class GameControl {
         let selected;
         let attrNum = Number(this.selectedAttr);
         if (abs(this.selectedAttr) > 100 && abs(this.selectedAttr) < 1000) {
+            console.log('out friendly');
             selected = attrNum > 0 ?
                 attrNum - 100 : attrNum + 100;
             prev = attrNum > 0 ? 30 : 31;
         }
         else if (abs(this.selectedAttr) > 1000) {
+            console.log('out enemy');
             selected = attrNum > 0 ?
                 attrNum - 1000 : attrNum + 1000;
             prev = attrNum > 0 ? 31 : 30;
@@ -366,30 +412,21 @@ class GameControl {
         this.selectedPiece = null;
         this.targetLocation = null;
         this.redTurn = !this.redTurn;
-        this.turnText.textContent = this.redTurn ? "Red Player's turn" : "Green Player's turn";
+        this.turnText.textContent = this.redTurn ? "Red Player's turn" : "Blue Player's turn";
         this.drawBoard();
         this.checkGameover();
+        this.startTimer();
         this.audio.play();
     }
     checkGameover() {
-        if (this.redPlayer.animalCount === 0 || this.bluePlayer.animalCount === 0) {
-            this.isGameover = true;
-            this.UI.showGameover("You have eliminated all of your opponent's beasts");
+        if (this.redPlayer.animalCount === 0) {
+            this.UI.showGameover("All of red player's beasts are eliminated", 'blue');
         }
-        else if (this.board.arr[0][4] !== 40) {
-            this.isGameover = true;
-        }
-        else if (this.board.arr[8][4] !== 41) {
-            this.isGameover = true;
-        }
-        else if (this.redPlayer.timeLeft === 0) {
-            this.isGameover = true;
-        }
-        else if (this.bluePlayer.timeLeft === 0) {
-            this.isGameover = true;
+        else if (this.bluePlayer.animalCount === 0) {
+            this.UI.showGameover("All of red player's beasts are eliminated", 'red');
         }
         else if (this.idleTurns === 30) {
-            this.isGameover = true;
+            this.UI.showGameover("Draw detected! No beast has died in the past 30 turns.", 'draw');
         }
     }
 }

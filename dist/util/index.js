@@ -1,6 +1,15 @@
 function abs(num) {
     return Math.abs(Number(num));
 }
+function deepClone(value) {
+    let result = [];
+    for (const key in value) {
+        // if (Object.prototype.hasOwnProperty(key)) {
+        result[key] = value[key];
+        // }
+    }
+    return result;
+}
 // function checkMoveValid(
 //     position: [number, number],
 //     target: [number, number],
@@ -18,6 +27,6 @@ function abs(num) {
 //     console.log(result)
 //     return result
 // }
-export { abs,
+export { abs, deepClone
 // checkMoveValid
  };

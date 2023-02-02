@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beast Chess</title>
+    <link rel="icon" type="image/x-icon" href="./src/assets/imgs/favicon.png">
+    <link rel="stylesheet" href="./index.css">
+    <link rel="stylesheet" href="./src/assets/iconfont/iconfont.css">
+    <style>
+        .options {
+            /* width: 100%; */
+            padding: 1rem;
+            position: relative;
+        }
+
+        .options button {
+            background-color: rgb(255, 255, 255);
+            padding: .5rem;
+            border: none;
+            font-size: 1rem;
+            border-radius: 50%;
+            margin-right: 1rem;
+            cursor: pointer;
+        }
+
+        .options .iconfont {
+            font-size: 1.5rem !important;
+        }
+
+        .game-page {
+            height: 100%;
+            width: 100%;
+            max-width: 700px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .options-box {
+            position: absolute;
+            background-color: white;
+            z-index: 999;
+            padding: .5rem 1rem;
+            opacity: 0;
+            transform: translateY(-25px);
+            left: 25%;
+            transition: .2s;
+            pointer-events: none;
+        }
+
+        .options-box li {
+            cursor: pointer;
+        }
+
+        .options-box li:hover {
+            background-color: antiquewhite;
+        }
+
+        .time-box-red,
+        .time-box-blue {
+            background-color: rgb(125, 62, 39);
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 800;
+            padding: .5rem;
+            border-radius: 6px;
+            width: fit-content;
+            height: fit-content;
+            margin-top: 1rem;
+            position: relative;
+        }
+
+        .time-box-blue {
+            left: 2rem;
+        }
+
+        .time-box-red {
+            right: 2rem;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- <div class="main-container"> -->
+    <main class="game-page">
+        <div class="score-box">
+            <div class="playerone-box">
+                <h2>PlayerOne</h2>
+                <p class="time-box-red">300</p>
+            </div>
+            <div class="turn-box">Red Player's Turn</div>
+            <div class="playertwo-box">
+                <h2>PlayerTwo</h2>
+                <p class="time-box-blue">300</p>
+            </div>
+        </div>
+        <section id="app"></section>
+        <div class="options">
+            <button class="back-btn"><i class="iconfont icon-fanhui"></i></button>
+            <button class="options-btn"><i class="iconfont icon-liebiao"></i></button>
+            <ul class="options-box">
+                <li class="concede-btn">Concede</li>
+                <li class="undo-btn">Undo</li>
+                <li class="draw-btn">Ask for a draw</li>
+            </ul>
+        </div>
+    </main>
+
+    <div class="shadow"></div>
+    <div class="game-over-modal">
+        <h3 class="winner-text">Red Player has won!</h3>
+        <p class="game-over-text">You have beaten your opponent!</p>
+        <button class="close-btn">Return to menu</button>
+    </div>
+    <!-- </div> -->
+
+    <audio src="./src/assets/audio/chessMove.mp3"></audio>
+    <script type="module" src="./dist/index.js"></script>
+    <script>
+        function getData() {
+            fetch('https://elm.cangdu.org/v1/cities?type=group')
+                .then(res => res.json())
+                .then(data => console.log(data))
+        }
+
+        getData()
+    </script>
+</body>
+
+</html>

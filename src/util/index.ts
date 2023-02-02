@@ -2,6 +2,17 @@ function abs(num: string | number): number {
     return Math.abs(Number(num))
 }
 
+function deepClone(value: any[]) {
+    let result: any[] = []
+
+    for (const key in value) {
+        // if (Object.prototype.hasOwnProperty(key)) {
+        result[key] = value[key]
+        // }
+    }
+
+    return result
+}
 // function checkMoveValid(
 //     position: [number, number],
 //     target: [number, number],
@@ -22,5 +33,6 @@ function abs(num: string | number): number {
 
 export {
     abs,
+    deepClone
     // checkMoveValid
 }
