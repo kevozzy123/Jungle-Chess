@@ -1,6 +1,9 @@
 # Jungle Chess
-<img src="./overview.jpeg" width="240">
-<img src="./overview2.jpeg" width="270">
+<p float="left">
+    <img src="./overview.jpeg" width="240">
+    <img src="./overview2.jpeg" width="270">
+</p>
+
 
 ## Overview
 Jungle Chess, or Beast Chess, is a traditional Chinese game that survives until modern day. There are many variations and each one of their rules are different. However, at its core, it always about eating the enemy beasts and/or taking their lair. The most popular rule starts with the elephant as the strongest piece, while the rat is the weakest. However, the rat is the only animal which can beat an elephant to keep it in check.
