@@ -1,7 +1,9 @@
 # Jungle Chess
+![alt text](./overview.jpeg)
 
 ## Overview
 Jungle Chess, or Beast Chess, is a traditional Chinese game that survives until modern day. There are many variations and each one of their rules are different. However, at its core, it always about eating the enemy beasts and/or taking their lair. The most popular rule starts with the elephant as the strongest piece, while the rat is the weakest. However, the rat is the only animal which can beat an elephant to keep it in check.
+So far, I am only making a single player version of this game. I plan to upgrade it into a multiplayer game in the future. 
 
 ## Rules
 
@@ -18,7 +20,7 @@ Traps will trap an enemy beast, **render it vunerable**. Any beast from you can 
 When a stronger beast meets a weaker one, the stronger one wins and the weaker one is removed from the game. If two beasts are equal, both of them die. It is also legal to move your weaker beast into a stronger enemy, thus sacrificing it.
 
 ### Win Condition
-Once the enemy lair is taken or all of their beasts are eliminated, you win.
+Once the enemy lair is taken or all of their beasts are eliminated or a player runs out of time, you win.
 
 ## Game Logic
 I used **vanilla TypeScript and CSS** to make this game without any framework such as React or Vue, though in hindsight, I definetely made it difficult for myself as I need to mannully manipulate a lot of DOM and I had to rely on web components to seperate html elements into another file.
@@ -42,5 +44,17 @@ I used an array of array to represent of chess board and its contents. This way,
 
 -1 to -8 represents elephant to rat of the green team, while 1 to 8 for the red team. 33 represents river terrain. 30 and 31 represents each team's traps
 Finally, 40 and 41 represent each lair.
-
+1, -1 elephant of team red and blue
+2, -2 lion of team red and blue
+3, -3 tiger of team red and blue
+, -4 cheeta of team red and blue
+5, -5 wolf of team red and blue
+6, -6 dog of team red and blue
+7, -7 cat of team red and blue
+8, -8 rat of team red and blue
 ### Animal special status
+Since everything on the chess board is represented with just a number, I am going to need some special numbers for those special circumstances. 
+For animals trapped in enemy traps, their absolute value will increase by 1000.
+for example, red elephant will go from 1 to 1001, or blue lion will go from -2 to -1002
+Animals inside of their own traps will increase their absolute value by 100
+Rats in river will have their value multiplies by 3, namely 8 to 24 or -8 to -24
