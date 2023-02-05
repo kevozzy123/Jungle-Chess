@@ -48,14 +48,15 @@ I used an array of array to represent of chess board and its contents. This way,
 
 -1 to -8 represents elephant to rat of the green team, while 1 to 8 for the red team. 33 represents river terrain. 30 and 31 represents each team's traps
 Finally, 40 and 41 represent each lair.
-1, -1 elephant of team red and blue
-2, -2 lion of team red and blue
-3, -3 tiger of team red and blue
-, -4 cheeta of team red and blue
-5, -5 wolf of team red and blue
-6, -6 dog of team red and blue
-7, -7 cat of team red and blue
-8, -8 rat of team red and blue
+<br>1, -1 elephant of team red and blue
+<br>2, -2 lion of team red and blue
+<br>3, -3 tiger of team red and blue
+<br>, -4 cheeta of team red and blue
+<br>5, -5 wolf of team red and blue
+<br>6, -6 dog of team red and blue
+<br>7, -7 cat of team red and blue
+<br>8, -8 rat of team red and blue
+
 ### Animal special status
 Since everything on the chess board is represented with just a number, I am going to need some special numbers for those special circumstances. 
 For animals trapped in enemy traps, their absolute value will increase by 1000.

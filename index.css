@@ -24,7 +24,7 @@ body {
     background-color: rgb(253, 221, 151);
     width: 100vw;
     height: 100%;
-    /* overflow: hidden; */
+    overflow: hidden;
     position: relative;
 }
 

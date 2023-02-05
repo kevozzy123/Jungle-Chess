@@ -29,6 +29,7 @@
     "webpack-dev-server": "^3.11.0"
   },
   "dependencies": {
-    "layui": "^2.8.0-rc.6"
+    "layui": "^2.8.0-rc.6",
+    "socket.io": "^4.5.4"
   }
 }

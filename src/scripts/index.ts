@@ -1,7 +1,7 @@
 import Player from './Player.js'
 import Board from './Board.js'
 import UserInterface from './UserIterface.js';
-import { abs, deepClone } from './util/index.js';
+import { abs, deepClone } from '../util/index';
 
 const RED = 'var(--one-piece)'
 const BLUE = 'var(--two-piece)'
