@@ -8,46 +8,63 @@ const io = new Server(server, { cors: { origin: "http://127.0.0.1:5500" } });
 let rooms = {}
 
 io.on('connection', (socket) => {
-    socket.username = user
-    socket.isReady = false
-    socket.num = null
+
 
     socket.on('join room', async (gameId, user) => {
+        socket.isReady = false
+        socket.num = null
+        socket.username = user
         if (!rooms[gameId]) {
             rooms[gameId] = [];
         }
         if (rooms[gameId].length < 2) {
-            socket.join('111')
-            const playerNum = rooms[gameId].length + 1;
+            socket.join(gameId)
             rooms[gameId].push(socket.id);
             socket.join(gameId);
-            socket.emit('player join', { playerNum, username: user, msg: 'Lobby joined!' });
+            socket.num = rooms[gameId].length
+
+            const sockets = await io.fetchSockets();
+            const playerNum = sockets.find(item => item.playerNum === 1) ? 2 : 1;
+            let players = []
+            sockets.forEach(item => {
+                players.push({
+                    playerNum: playerNum,
+                    username: item.username,
+                    id: item.id
+                })
+            })
+            io.in(gameId).emit('player join', {
+                players,
+                msg: 'Lobby joined!',
+                playerId: socket.id
+            });
             console.log(`${user} joined game ${gameId} as player ${playerNum}: ${socket.id}`);
         } else {
             socket.emit('player join', { msg: 'Lobby is full' });
         }
 
-        io.to('111').emit("roomUsers", {
+        io.to(gameId).emit("roomUsers", {
             room: gameId,
-            users: io.sockets.adapter.rooms.get('111'),
+            users: io.sockets.adapter.rooms.get(gameId),
         });
-        const sockets = await io.fetchSockets();
-        sockets.forEach(item => {
-            console.log('userinfo: ', item.username, item.isReady)
-        })
-
     });
 
-    socket.on('ready', (status) => {
-        console.log(status)
-        socket.isReady = status
-
-        io.in('111').emit('ready-state', status)
+    socket.on('ready', async (aa) => {
+        console.log('ready', aa)
+        // const sockets = await io.fetchSockets();
+        // const i = sockets.findIndex(item => item.id === socketId)
+        // console.log(i)
+        // console.log('before? ', sockets[i].isReady)
+        // sockets[i].isReady = isReady
+        // console.log('after? ', sockets[i].isReady)
+        // // const sockets = await io.fetchSockets();
+        // // sockets.find()
+        // io.in(gameId).emit('ready-state', 'sockets')
     })
 
     socket.on('private message', (data) => {
-        const connectedUsers = io.sockets.adapter.rooms.get('111')
-        console.log(connectedUsers)
+        // const connectedUsers = io.sockets.adapter.rooms.get(gameId)
+        // console.log(connectedUsers)
         io.emit('res', data);
         // socket.broadcast.to(data.room).emit('res', data);
         // if (room) {
