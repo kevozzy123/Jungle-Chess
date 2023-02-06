@@ -8,29 +8,48 @@ const io = new Server(server, { cors: { origin: "http://127.0.0.1:5500" } });
 let rooms = {}
 
 io.on('connection', (socket) => {
-    console.log(`User connected: ${socket.id}`);
+    socket.username = user
+    socket.isReady = false
+    socket.num = null
 
-    socket.on('join room', (gameId) => {
+    socket.on('join room', async (gameId, user) => {
         if (!rooms[gameId]) {
             rooms[gameId] = [];
         }
         if (rooms[gameId].length < 2) {
+            socket.join('111')
             const playerNum = rooms[gameId].length + 1;
             rooms[gameId].push(socket.id);
             socket.join(gameId);
-            socket.emit('assign player', playerNum);
-            console.log(`User joined game ${gameId} as player ${playerNum}: ${socket.id}`);
+            socket.emit('player join', { playerNum, username: user, msg: 'Lobby joined!' });
+            console.log(`${user} joined game ${gameId} as player ${playerNum}: ${socket.id}`);
         } else {
-            socket.emit('game full');
-            console.log(`Game ${gameId} is full`);
+            socket.emit('player join', { msg: 'Lobby is full' });
         }
+
+        io.to('111').emit("roomUsers", {
+            room: gameId,
+            users: io.sockets.adapter.rooms.get('111'),
+        });
+        const sockets = await io.fetchSockets();
+        sockets.forEach(item => {
+            console.log('userinfo: ', item.username, item.isReady)
+        })
+
     });
 
+    socket.on('ready', (status) => {
+        console.log(status)
+        socket.isReady = status
+
+        io.in('111').emit('ready-state', status)
+    })
+
     socket.on('private message', (data) => {
-        console.log(data)
-        const room = rooms[data.room];
-        const connectedUsers = io.sockets.adapter.rooms.get(111)
-        io.to(data.room).emit('private message', data);
+        const connectedUsers = io.sockets.adapter.rooms.get('111')
+        console.log(connectedUsers)
+        io.emit('res', data);
+        // socket.broadcast.to(data.room).emit('res', data);
         // if (room) {
         //     room.forEach(async (id) => {
         //         console.log('foreach', id)
@@ -48,6 +67,10 @@ io.on('connection', (socket) => {
         //     });
         // }
     });
+
+    socket.on('making move', (board) => {
+
+    })
 
     socket.on('disconnect', () => {
         console.log(`User disconnected: ${socket.id}`);

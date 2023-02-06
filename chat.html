@@ -57,14 +57,45 @@
         #messages>li:nth-child(odd) {
             background: #efefef;
         }
+
+        button {
+            background-color: rgb(0, 136, 255);
+            color: white;
+            padding: .5rem 1rem;
+            border: none;
+            border-radius: 1rem;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            cursor: pointer;
+        }
+
+        .playerOne,
+        .playerTwo {
+            padding: 1rem;
+            height: 100px;
+            width: 200px;
+            border: 1px solid black;
+        }
     </style>
 </head>
 
 <body>
     <ul id="messages"></ul>
+    <h2 class="room-info">this is title</h2>
     <form id="form" action="">
         <input id="input" autocomplete="off" /><button>Send</button>
     </form>
+    <button class="ready-btn">ready or cancel</button>
+
+    <article class="playerOne">
+        <h4>Name:</h4>
+        <span></span>
+    </article>
+    <article class="playerTwo">
+        <h4>Name:</h4>
+        <span></span>
+    </article>
 
     <script src="./chat.js" type="module"></script>
 </body>
